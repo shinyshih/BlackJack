@@ -14,6 +14,8 @@
 		38EBCB011F7B66BC0005FA45 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38EBCAFF1F7B66BC0005FA45 /* LaunchScreen.storyboard */; };
 		38EBCB0C1F7B66BC0005FA45 /* BlackJackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EBCB0B1F7B66BC0005FA45 /* BlackJackTests.swift */; };
 		38EBCB171F7B66BC0005FA45 /* BlackJackUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EBCB161F7B66BC0005FA45 /* BlackJackUITests.swift */; };
+		38EBCB251F7B79F00005FA45 /* cards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EBCB241F7B79F00005FA45 /* cards.swift */; };
+		38EBCB271F7E03670005FA45 /* BlackJackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38EBCB261F7E03670005FA45 /* BlackJackViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		38EBCB121F7B66BC0005FA45 /* BlackJackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlackJackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		38EBCB161F7B66BC0005FA45 /* BlackJackUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackJackUITests.swift; sourceTree = "<group>"; };
 		38EBCB181F7B66BC0005FA45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		38EBCB241F7B79F00005FA45 /* cards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = cards.swift; sourceTree = "<group>"; wrapsLines = 1; };
+		38EBCB261F7E03670005FA45 /* BlackJackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackJackViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,8 @@
 				38EBCAF61F7B66BC0005FA45 /* AppDelegate.swift */,
 				38EBCAF81F7B66BC0005FA45 /* ViewController.swift */,
 				38EBCAFA1F7B66BC0005FA45 /* Main.storyboard */,
+				38EBCB261F7E03670005FA45 /* BlackJackViewController.swift */,
+				38EBCB241F7B79F00005FA45 /* cards.swift */,
 				38EBCAFD1F7B66BC0005FA45 /* Assets.xcassets */,
 				38EBCAFF1F7B66BC0005FA45 /* LaunchScreen.storyboard */,
 				38EBCB021F7B66BC0005FA45 /* Info.plist */,
@@ -259,6 +265,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38EBCB251F7B79F00005FA45 /* cards.swift in Sources */,
+				38EBCB271F7E03670005FA45 /* BlackJackViewController.swift in Sources */,
 				38EBCAF91F7B66BC0005FA45 /* ViewController.swift in Sources */,
 				38EBCAF71F7B66BC0005FA45 /* AppDelegate.swift in Sources */,
 			);
