@@ -19,8 +19,11 @@ class BlackJackViewController: UIViewController {
     @IBOutlet weak var hitButton: UIButton!
     @IBOutlet weak var theOpenButton: UIButton!
     @IBOutlet weak var surrenderButton: UIButton!
-    @IBOutlet weak var chipLabel: UILabel!
+    @IBOutlet weak var playerChipLabel: UILabel!
+    @IBOutlet weak var bankerChipLabel: UILabel!
     @IBOutlet weak var wagerLabel: UILabel!
+    @IBOutlet weak var playerCloseImageView: UIImageView!
+    @IBOutlet weak var bankerCloseImageView: UIImageView!
     
     var playerCloseCard = ""
     var bankerCloseCard = ""
@@ -37,11 +40,12 @@ class BlackJackViewController: UIViewController {
    
     @IBAction func closeCard(_ sender: Any) {
         print("closeCard")
-        playerCards[0].text = "♠︎"
+        playerCloseImageView.isHidden = false
     }
     
     @IBAction func seeCard(_ sender: Any) {
         print("seeCard")
+        playerCloseImageView.isHidden = true
         playerCards[0].text = playerCloseCard
     }
    
@@ -54,6 +58,8 @@ class BlackJackViewController: UIViewController {
         bankerCloseCard = cards[distribution.nextInt()]
         bankerOpenCard = cards[distribution.nextInt()]
 
+        playerCloseImageView.isHidden = false
+        bankerCloseImageView.isHidden = false
         playerCards[1].text = "\(playerOpenCard)"
         bankerCards[1].text = "\(bankerOpenCard)"
         
@@ -64,9 +70,17 @@ class BlackJackViewController: UIViewController {
         
         // 分數
         playerScore += scoreJudgment(card: playerOpenCard)
-        playerScoreLabel.text = "\(playerScore)"
-        
         playerScore += scoreJudgment(card: playerCloseCard)
+        if playerCloseCard.contains("A") {
+            if playerScore >= 21 {
+                playerScore = playerScore - 11 + 1
+            }
+        }
+        if playerOpenCard.contains("A") {
+            if playerScore >= 21 {
+                playerScore = playerScore - 11 + 1
+            }
+        }
         playerScoreLabel.text = "\(playerScore)"
         
         bankerScore += scoreJudgment(card: bankerOpenCard)
@@ -87,6 +101,11 @@ class BlackJackViewController: UIViewController {
         playerCards[count].isHidden = false
         playerCards[count].text = cards[distribution.nextInt()]
         playerScore += scoreJudgment(card: playerCards[count].text!)
+        if playerCards[count].text!.contains("A") {
+            if playerScore >= 21 {
+                playerScore = playerScore - 11 + 1
+            }
+        }
         playerScoreLabel.text = "\(playerScore)"
 
         count = count + 1
@@ -107,28 +126,30 @@ class BlackJackViewController: UIViewController {
         bankerCards[0].text = bankerCloseCard
         playerCards[0].text = playerCloseCard
         bankerScoreLabel.isHidden = false
+        bankerCloseImageView.isHidden = true
+        playerCloseImageView.isHidden = true
         
         bankerScore += scoreJudgment(card: bankerCloseCard)
         bankerScoreLabel.text = "\(bankerScore)"
         
-        
         theOpenButton.isEnabled = false
         hitButton.isEnabled = false
         
-        if bankerScore < 16 {
-            count = 2
+        count = 2
+        while bankerScore < 16 {
             bankerCards[count].isHidden = false
             bankerCards[count].text = cards[distribution.nextInt()]
             bankerScore += scoreJudgment(card: bankerCards[count].text!)
             bankerScoreLabel.text = "\(bankerScore)"
+            count = count + 1
         }
         
-        if bankerScore > playerScore {
-            lose()
-        }
-        
-        if playerScore > bankerScore {
+        if bankerScore > 21 || playerScore > bankerScore{
             win()
+        } else if bankerScore > playerScore {
+            lose()
+        } else if bankerScore == playerScore {
+            tie()
         }
         
         
@@ -139,12 +160,14 @@ class BlackJackViewController: UIViewController {
     @IBAction func surrender(_ sender: Any) {
         playerScore = 0
         playerScoreLabel.text = "\(playerScore)"
-        
+        playerChip = playerChip - 100
+        bankerChip = bankerChip + 100
         
         nextRound()
     }
     
-    var chip = 1000
+    var playerChip = 1000
+    var bankerChip = 1000
     
     
     
@@ -156,7 +179,7 @@ class BlackJackViewController: UIViewController {
     func scoreJudgment ( card: String) -> Int {
         var score = 0
         if card.contains("A") {
-            score = 1
+            score = 11
         } else if card.contains("2") {
             score = 2
         } else if card.contains("3") {
@@ -185,33 +208,52 @@ class BlackJackViewController: UIViewController {
         return score
     }
     
+    
+    func okHandler() {
+        
+    }
+    
     // lose alert
     func lose () {
-        let controller = UIAlertController(title: "Game Over", message: "輸了100！", preferredStyle: UIAlertControllerStyle.alert)
-        let action = UIAlertAction(title: "Next Round", style: UIAlertActionStyle.default, handler: nil)
+        let controller = UIAlertController(title: "你輸了！", message: "輸了100！分數： \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         controller.addAction(action)
         show(controller, sender: nil)
-        chip = chip - 100
-        chipLabel.text = "籌碼：\(chip)"
+        playerChip = playerChip - 100
+        bankerChip = bankerChip + 100
         
         nextRound()
     }
     
     // win alert
     func win () {
-        let controller = UIAlertController(title: "You win", message: "贏了100！", preferredStyle: UIAlertControllerStyle.alert)
-        let action = UIAlertAction(title: "Next Round", style: UIAlertActionStyle.default, handler: nil)
+        let controller = UIAlertController(title: "你贏了！", message: "贏了100！分數： \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         controller.addAction(action)
         show(controller, sender: nil)
-        chip = chip + 100
-        chipLabel.text = "籌碼：\(chip)"
+        playerChip = playerChip + 100
+        bankerChip = bankerChip - 100
+
         
         nextRound()
     }
     
     //  分數爆掉
-    func bust() {
-        let controller = UIAlertController(title: "You busted", message: "爆了！ \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
+    func bust () {
+        let controller = UIAlertController(title: "爆了！", message: "分數： \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        controller.addAction(action)
+        show(controller, sender: nil)
+        
+        bankerChip = bankerChip + 100
+        playerChip = playerChip - 100
+        nextRound()
+        
+    }
+    
+    // 平手
+    func tie () {
+        let controller = UIAlertController(title: "平手", message: "分數： \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
         let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
         controller.addAction(action)
         show(controller, sender: nil)
@@ -220,9 +262,14 @@ class BlackJackViewController: UIViewController {
         
     }
     
+    
     //  下一回
     func nextRound () {
         let distribution = GKShuffledDistribution(lowestValue: 0, highestValue: cards.count - 1)
+        
+        if playerChip == 0 || bankerChip == 0 {
+            performSegue(withIdentifier: "gameOverSegue", sender: nil)
+        }
         
         playerCards[0].isHidden = true
         playerCards[1].isHidden = true
@@ -246,11 +293,19 @@ class BlackJackViewController: UIViewController {
         theOpenButton.isEnabled = false
         surrenderButton.isEnabled = false
         
+        playerChipLabel.text = "你的籌碼：\(playerChip)"
+        bankerChipLabel.text = "莊家籌碼：\(bankerChip)"
+        
         count = 2
-
+        
+        
     }
     
-    
+    @IBAction func unwindToMultipleChoicePage(segue: UIStoryboardSegue) {
+        playerChip = 1000
+        bankerChip = 1000
+        nextRound()
+    }
     
     
     
@@ -269,14 +324,16 @@ class BlackJackViewController: UIViewController {
     }
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
+        let controller = segue.destination as! GameOverViewController
+        controller.playerChip = playerChip
     }
-    */
+ 
 
 }
