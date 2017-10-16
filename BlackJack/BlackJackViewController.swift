@@ -222,7 +222,6 @@ class BlackJackViewController: UIViewController {
         playerChip = playerChip - 100
         bankerChip = bankerChip + 100
         
-        nextRound()
     }
     
     // win alert
@@ -234,8 +233,6 @@ class BlackJackViewController: UIViewController {
         playerChip = playerChip + 100
         bankerChip = bankerChip - 100
 
-        
-        nextRound()
     }
     
     //  分數爆掉
@@ -247,7 +244,6 @@ class BlackJackViewController: UIViewController {
         
         bankerChip = bankerChip + 100
         playerChip = playerChip - 100
-        nextRound()
         
     }
     
@@ -258,7 +254,6 @@ class BlackJackViewController: UIViewController {
         controller.addAction(action)
         show(controller, sender: nil)
         
-        nextRound()
         
     }
     
