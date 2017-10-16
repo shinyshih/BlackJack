@@ -209,14 +209,14 @@ class BlackJackViewController: UIViewController {
     }
     
     
-    func okHandler() {
-        
+    func okHandler(action: UIAlertAction) {
+        nextRound()
     }
     
     // lose alert
     func lose () {
         let controller = UIAlertController(title: "你輸了！", message: "輸了100！分數： \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
-        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: okHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip = playerChip - 100
@@ -228,7 +228,7 @@ class BlackJackViewController: UIViewController {
     // win alert
     func win () {
         let controller = UIAlertController(title: "你贏了！", message: "贏了100！分數： \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
-        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: okHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         playerChip = playerChip + 100
@@ -241,7 +241,7 @@ class BlackJackViewController: UIViewController {
     //  分數爆掉
     func bust () {
         let controller = UIAlertController(title: "爆了！", message: "分數： \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
-        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: okHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         
@@ -254,7 +254,7 @@ class BlackJackViewController: UIViewController {
     // 平手
     func tie () {
         let controller = UIAlertController(title: "平手", message: "分數： \(playerScore)", preferredStyle: UIAlertControllerStyle.alert)
-        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        let action = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: okHandler)
         controller.addAction(action)
         show(controller, sender: nil)
         
