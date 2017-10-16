@@ -287,6 +287,8 @@ class BlackJackViewController: UIViewController {
         hitButton.isEnabled = false
         theOpenButton.isEnabled = false
         surrenderButton.isEnabled = false
+        playerCloseImageView.isHidden = true
+        bankerCloseImageView.isHidden = true
         
         playerChipLabel.text = "你的籌碼：\(playerChip)"
         bankerChipLabel.text = "莊家籌碼：\(bankerChip)"
